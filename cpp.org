@@ -224,7 +224,7 @@ The C++ standard generally prefered at Skylla Technologies is C++14.
    #+BEGIN_SRC c++ :flags "-std=c++14"
      auto foo = 4; // bad. :(
      auto bar = static_cast<int>(foo + 5); // good! :)
-     auto baz = my_vec.begin();
+     auto baz = my_vec.begin(); // good! :)
    #+END_SRC
 
 ** foreach loops
@@ -237,6 +237,7 @@ The C++ standard generally prefered at Skylla Technologies is C++14.
          do_stuff(my_vec[i]);
      }
 
+     // good! :)
      for (auto&& e : my_vec) {
          do_stuff(e);
       }
