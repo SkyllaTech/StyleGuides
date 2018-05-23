@@ -1,0 +1,259 @@
+#+TITLE: Skylla Technologies C++ Style Guide
+
+This guide describes the styles used at Skylla Technologies for C++ projects.
+
+The C++ standard generally prefered at Skylla Technologies is C++14.
+
+* Documentation
+  
+  Headers of a file should include a brief description of what the file is used for as well as the standard copyright:
+
+  #+BEGIN_SRC c++
+    /**
+     ,* Copyright (C) 2018, Skylla Technologies Inc., all rights reserved
+     ,*
+     ,* Some short description of the file in the project
+     ,*
+     ,* Some (optional) longer description about how stuff works.
+     ,*/
+
+    #include <iostream>
+  #+END_SRC
+
+  Documentation should be handled with Doxygen, using standards based on those of Javadocs:
+
+  #+BEGIN_SRC c++
+    /**
+     ,* Short description
+     ,*
+     ,* Long description, sample usage, etc.
+     ,*/
+    class Foo {
+        int m_some_field; // description of var
+
+    public:
+
+        /**
+         ,* short description of do_baz
+         ,* 
+         ,* @param a description of var a
+         ,* @param b description of var b
+         ,*
+         ,* @return what does do_baz return
+         ,*
+         ,* long description of do_baz, sample usage, etc.
+         ,*/
+        Bar do_baz(int a, float b) {
+            Bar bar;
+            // do stuff
+            return bar;
+        }
+    };
+  #+END_SRC
+
+* Naming
+  
+  Names should generally be descriptive of what they do:
+
+  #+BEGIN_SRC c++
+    int a; // bad. :(
+    int avg_pig_weight; // good! :)
+
+    class P; // bad. :(
+    class Pig; // good! :)
+  #+END_SRC
+
+  The one exception to this rule is for counters in loops:
+
+  #+BEGIN_SRC c++
+    for (int i = 0; i < 10; ++i) {
+        // do something with i
+    }
+  #+END_SRC
+
+** Namespace names
+
+   Namespaces are lowercase, and should be generally simple
+
+   #+BEGIN_SRC c++
+     namespace skylla_technologies {} // bad. :(
+     namespace skl {} // good! :)
+     namespace skylla {} // okay.
+   #+END_SRC
+
+** Class names
+
+   Class names are `CamelCase`:
+
+   #+BEGIN_SRC c++
+     class foo; // bad. :(
+     class Foo; // good! :)
+
+     class foo_bar; // bad. :(
+     class fooBar; // bad. :(
+     class FooBar; // good! :)
+   #+END_SRC
+
+** Variable names
+
+   Variable names should be `snake_case`:
+
+   #+BEGIN_SRC c++
+     int fooBar; // bad. :(
+     int foo_bar; // good! :)
+   #+END_SRC
+
+   Member field variables should be prepended with an `m_`:
+
+   #+BEGIN_SRC c++
+     class Foo {
+         int bar_baz; // bad. :(
+         int _bar_baz; // okay.
+         int m_bar_baz; // good! :)
+     };
+   #+END_SRC
+
+** Function/method names
+
+   Function and method names should be `snake_case`:
+
+   #+BEGIN_SRC c++
+     int FooBar(); // bad. :(
+     int fooBar(); // bad. :(
+     int Foo_Bar(); // bad. :(
+     int foo_bar(); // good! :)
+
+     class Foo {
+         int barBaz; // bad. :(
+         int bar_baz(); // good! :)
+     }
+   #+END_SRC
+
+** Constants/Defines
+
+   Constants and defines should use all capital letters, with underscore separation as an option
+
+   #+BEGIN_SRC c++
+     constexpr int foobar = 4; // bad. :(
+     constexpr int FOOBAR = 4; // good! :)
+     constexpr int FOO_BAR = 4; // good! :)
+
+     #define foobar 4 // bad. :(
+     #define FOOBAR 4 // good! :)
+     #define FOO_BAR 4 // good! :)
+   #+END_SRC
+
+** Filenames
+
+   Filenames should be `snake_case`. No spaces!
+
+   #+BEGIN_EXAMPLE
+   src/
+     barbaz.cpp // bad. :(
+     BarBaz.cpp // bad. :(
+     bar baz.cpp // bad. :(
+     bar_baz.cpp // good! :)
+   #+END_EXAMPLE
+
+* Spacing and Indentation
+  
+** Indentation
+
+   Indentation should be using 4 spaces:
+
+   #+BEGIN_SRC c++
+       {
+           foo(); // this is a tab. bad! :(
+       }
+
+       {
+       foo(); // bad. :(
+       }
+
+       {
+           foo(); // these are spaces. good! :)
+       }
+   #+END_SRC
+
+   There is an exception with namespaces however:
+
+   #+BEGIN_SRC c++
+     // bad. :(
+     namespace foo {
+
+         class Foo {
+
+         };
+
+     } // namespace foo
+
+
+     // good! :)
+     namespace bar {
+
+     class Bar {
+         
+     };
+
+     } // namespace bar
+   #+END_SRC
+
+** Braces
+
+   Braces should line up with the previous line:
+
+   #+BEGIN_SRC c++
+     // good! :)
+     void foo() {
+         // do stuff
+     }
+
+     // bad. :(
+     void bar()
+     {
+         // do stuff
+     }
+   #+END_SRC
+
+* General Programming
+  
+** `auto` keyword
+
+   `auto` keyword is prefered in cases where the type is clearly named in the declaration:
+
+   #+BEGIN_SRC c++ :flags "-std=c++14"
+     auto foo = 4; // bad. :(
+     auto bar = static_cast<int>(foo + 5); // good! :)
+     auto baz = my_vec.begin();
+   #+END_SRC
+
+** foreach loops
+
+   Prefer foreach loops when possible:
+
+   #+BEGIN_SRC c++ :flags "-std=c++14"
+     // bad. :(
+     for (int i = 0; i < my_vec.size(); ++i) {
+         do_stuff(my_vec[i]);
+     }
+
+     for (auto&& e : my_vec) {
+         do_stuff(e);
+      }
+   #+END_SRC
+   
+   Naturally, any case which requires use of the index should use the former method.
+
+** constexpr
+
+   Use constexpr where possible!
+
+   Prefer constexpr to defines:
+
+   #+BEGIN_SRC c++ :flags "-std=c++14"
+     // bad. :(
+     #define FOO 4
+
+     // good! :)
+     constexpr int FOO = 4;
+   #+END_SRC
