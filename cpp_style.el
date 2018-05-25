@@ -7,5 +7,7 @@
   (setq-local c-basic-offset 4)
   (setq-local c-doc-comment-style 'javadoc)
   (setq-local c-block-comment-prefix "* ")
-  (c-set-offset 'innamespace [0]))
+  (c-set-offset 'innamespace [0])
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'arglist-close 0))
 (add-hook 'c++-mode-hook 'cpp-style-hook)
